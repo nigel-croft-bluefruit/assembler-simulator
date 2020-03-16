@@ -51,13 +51,18 @@
             <div class="col-lg-5 col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4 class="panel-title">Output</h4>
+                        <h4 class="panel-title">Display Unit</h4>
                     </div>
                     <div class="panel-body source-code">
                         <div style="float:left;" class="output"
                              ng-repeat="m in memory.data | startFrom: outputStartIndex track by $index">
                             <span>{{ getChar(m) }}</span>
                         </div>
+                    </div>
+                    <div class="panel-body source-code" style="padding-top: 0px;">
+                      <button type="button" class="btn btn-default navbar-btn" ng-click="keypress(4)"><span class="glyphicon glyphicon-minus"></span></button>
+                      <button type="button" class="btn btn-default navbar-btn" ng-click="keypress(2)"><span class="glyphicon glyphicon-time"></span></button>
+                      <button type="button" class="btn btn-default navbar-btn" ng-click="keypress(1)" ><span class="glyphicon glyphicon-plus"></span></button>
                     </div>
                 </div>
                 <div class="panel panel-default">
@@ -118,7 +123,7 @@
                                 <a ng-click="displayHex = true" ng-hide="displayHex">Hex</a>
                                 <a ng-click="displayHex = false" ng-show="displayHex">Decimal</a>
 								<br>
-								Register addressing: 
+								Register addressing:
                                 <span style="margin-left:5px;">A:</span>
                                 <a ng-click="displayA = true" ng-hide="displayA">Show</a>
                                 <a ng-click="displayA = false" ng-show="displayA">Hide</a>
