@@ -578,7 +578,7 @@ app.service('cpu', ['opcodes', 'memory', function(opcodes, memory) {
         },
         reset: function() {
             var self = this;
-            self.maxSP = 247;
+            self.maxSP = 250;
             self.minSP = 0;
 
             self.gpr = [0, 0, 0, 0];
