@@ -55,19 +55,19 @@ app.service('cpu', ['opcodes', 'memory', function(opcodes, memory) {
 
                 var indirectRegisterAddress = function(value) {
                     var reg = value % 8;
-                    
+
                     var base;
                     if (reg < self.gpr.length) {
                         base = self.gpr[reg];
                     } else {
                         base = self.sp;
                     }
-                    
+
                     var offset = Math.floor(value / 8);
                     if ( offset > 15 ) {
                         offset = offset - 32;
                     }
-                    
+
                     return base+offset;
                 };
 
@@ -123,7 +123,7 @@ app.service('cpu', ['opcodes', 'memory', function(opcodes, memory) {
                 if (self.ip < 0 || self.ip >= memory.data.length) {
                     throw "Instruction pointer is outside of memory";
                 }
-                
+
                 var regTo, regFrom, memFrom, memTo, number;
                 var instr = memory.load(self.ip);
                 switch(instr) {
@@ -578,7 +578,7 @@ app.service('cpu', ['opcodes', 'memory', function(opcodes, memory) {
         },
         reset: function() {
             var self = this;
-            self.maxSP = 231;
+            self.maxSP = 250;
             self.minSP = 0;
 
             self.gpr = [0, 0, 0, 0];

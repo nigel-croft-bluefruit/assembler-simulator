@@ -692,19 +692,19 @@ var app = angular.module('ASMSimulator', []);
 
                 var indirectRegisterAddress = function(value) {
                     var reg = value % 8;
-                    
+
                     var base;
                     if (reg < self.gpr.length) {
                         base = self.gpr[reg];
                     } else {
                         base = self.sp;
                     }
-                    
+
                     var offset = Math.floor(value / 8);
                     if ( offset > 15 ) {
                         offset = offset - 32;
                     }
-                    
+
                     return base+offset;
                 };
 
@@ -760,7 +760,7 @@ var app = angular.module('ASMSimulator', []);
                 if (self.ip < 0 || self.ip >= memory.data.length) {
                     throw "Instruction pointer is outside of memory";
                 }
-                
+
                 var regTo, regFrom, memFrom, memTo, number;
                 var instr = memory.load(self.ip);
                 switch(instr) {
@@ -1215,7 +1215,7 @@ var app = angular.module('ASMSimulator', []);
         },
         reset: function() {
             var self = this;
-            self.maxSP = 231;
+            self.maxSP = 250;
             self.minSP = 0;
 
             self.gpr = [0, 0, 0, 0];
@@ -1361,17 +1361,25 @@ var app = angular.module('ASMSimulator', []);
     $scope.speeds = [{speed: 1, desc: "1 HZ"},
                      {speed: 4, desc: "4 HZ"},
                      {speed: 8, desc: "8 HZ"},
-                     {speed: 16, desc: "16 HZ"}];
+                     {speed: 16, desc: "16 HZ"},
+                     {speed: 32, desc: "32 HZ"},
+                     {speed: 64, desc: "64 HZ"},
+                    ];
     $scope.speed = 4;
-    $scope.outputStartIndex = 232;
+    $scope.outputStartIndex = 251;
+    $scope.keyRegister = 2;
 
-    $scope.code = "; Simple example\n; Writes Hello World to the output\n\n	JMP start\nhello: DB \"Hello World!\" ; Variable\n       DB 0	; String terminator\n\nstart:\n	MOV C, hello    ; Point to var \n	MOV D, 232	; Point to output\n	CALL print\n        HLT             ; Stop execution\n\nprint:			; print(C:*from, D:*to)\n	PUSH A\n	PUSH B\n	MOV B, 0\n.loop:\n	MOV A, [C]	; Get char from var\n	MOV [D], A	; Write to output\n	INC C\n	INC D  \n	CMP B, [C]	; Check if end\n	JNZ .loop	; jump if not\n\n	POP B\n	POP A\n	RET";
+    $scope.code = "; Simple example\n; Writes Hello to the output\n\n	JMP start\nkeyPort:DB 0\n\nhello:  DB \"Hello\" ; Variable\n        DB 0	; String terminator\n\nstart:\n	MOV C, hello    ; Point to var \n	MOV D, 251	; Point to output\n	CALL print\n        HLT             ; Stop execution\n\nprint:			; print(C:*from, D:*to)\n	PUSH A\n	PUSH B\n	MOV B, 0\n.loop:\n	MOV A, [C]	; Get char from var\n	MOV [D], A	; Write to output\n	INC C\n	INC D  \n	CMP B, [C]	; Check if end\n	JNZ .loop	; jump if not\n\n	POP B\n	POP A\n	RET";
+
+    $scope.keypress = function (key) {
+      memory.store($scope.keyRegister,key);
+    };
 
     $scope.reset = function () {
-        cpu.reset();
-        memory.reset();
-        $scope.error = '';
-        $scope.selectedLine = -1;
+      cpu.reset();
+      memory.reset();
+      $scope.error = '';
+      $scope.selectedLine = -1;
     };
 
     $scope.executeStep = function () {
